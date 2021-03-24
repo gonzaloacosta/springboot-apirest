@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  pre_build:
+    commands:
+      - echo Entering pre_build phase...
+  build:
+    commands:
+      - echo Entering build phase...
+      - echo Build started on `date`
+      - mvn package -B
+  post_build:
+    commands:
+      - echo Entering post_build phase...
+      - echo Build completed on `date`i
+artifacts:
+  files:
+    - target/*.jar
+    - Dockerfile
