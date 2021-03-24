@@ -1,4 +1,5 @@
-FROM openjdk:8-jdk-alpine
+FROM alpine:3.11
+RUN apk add openjdk11 && java -version
 EXPOSE 8080
 COPY target/*.jar demo.jar
 CMD java -jar /demo.jar
