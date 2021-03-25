@@ -10,7 +10,7 @@ public class MessageController {
 
     @GetMapping("/message")
     Message send() {
-            return new Message("Hello World from Spring Boop App");
+            return new Message("Hello World from Raining Boot Apps");
     }
 
     @PostMapping("/message")

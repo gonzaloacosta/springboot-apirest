@@ -4,15 +4,16 @@ phases:
   pre_build:
     commands:
       - echo Entering pre_build phase...
+      - echo pre_build started on `date`
   build:
     commands:
       - echo Entering build phase...
-      - echo Build started on `date`
+      - echo build started on `date`
       - mvn package -B
   post_build:
     commands:
       - echo Entering post_build phase...
-      - echo Build completed on `date`i
+      - echo post_build completed on `date`
 artifacts:
   files:
     - target/*.jar
