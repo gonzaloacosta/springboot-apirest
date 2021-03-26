@@ -5,6 +5,7 @@ phases:
     commands:
       - echo Entering pre_build phase...
       - echo pre_build started on `date`
+      - aws s3 cp s3://semper-cert-rapientrega/serco.crt serco.crt
   build:
     commands:
       - echo Entering build phase...
@@ -16,5 +17,6 @@ phases:
       - echo post_build completed on `date`
 artifacts:
   files:
+    - serco.crt
     - target/*.jar
     - Dockerfile
