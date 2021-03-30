@@ -9,11 +9,14 @@ pipeline {
         stage('Stage 1 - Configure & Clean Slave') {
             steps {
                 echo "STAGE1 - Tasks pre Test and build"
+                //sh "git clone https://github.com/gonzaloacosta/springboot-apirest app"
+                sh "ls -ltr"
             }
         }
         stage('Stage 2 - Unit Test') {
             steps {
                 echo "STAGE2 - Unit Test"
+                sh "pwd ; ls -ltr"
                 sh "mvn test"
             }
         }
