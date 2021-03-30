@@ -14,20 +14,20 @@ pipeline {
         stage('Stage 2 - Unit Test') {
             steps {
                 echo "STAGE2 - Unit Test"
-                sh "mvn test 
+                sh "mvn test"
             }
         }
         stage('Stage 3 - Release & Upload Nexus') {
             steps {
                 echo "STAGE3 - Release & Upload Nexus"
-                sh "mvn versions:set -DnewVersion=$env.VERSION 
+                sh "mvn versions:set -DnewVersion=$env.VERSION"
                 sh "mvn clean package -DskipTests"
             }
         }
         stage('Stage 4 - Snapshot & Upload Nexus') {
             steps {
                 echo "STAGE 4 - Snapshot & Upload Nexus"
-                sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT
+                sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT"
                 sh "mvn clean package -DskipTests" 
             }
         }
