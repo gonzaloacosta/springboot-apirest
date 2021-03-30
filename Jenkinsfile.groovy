@@ -15,7 +15,6 @@ pipeline {
                 echo "STAGE1 - Tasks pre Test and build"
                 sh "ls -ltr"
                 checkout scm
-                mvn clean
             }
         }
         stage('Stage 2 - Unit Test') {
