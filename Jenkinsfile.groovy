@@ -4,10 +4,10 @@ pipeline {
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
     	VERSION = "0.1"
-        AWS+REGION = "us-east-1"
-        AWS_CREDENTIAL = "aws-credentials-jenkins-s3"
-        S3_ARTIFACT = "semperti-rapientrega-development-s3-backend-artifact"
-        S3_ARTIFACT_NAME = "rapientrega.zip"
+        //AWS_REGION = "us-east-1"
+        //AWS_CREDENTIAL = "aws-credentials-jenkins-s3"
+        //S3_ARTIFACT = "semperti-rapientrega-development-s3-backend-artifact"
+        //S3_ARTIFACT_OBJECT = "rapientrega.zip"
     }
     stages {
         stage('Stage 1 - Configure & Clean Slave') {
