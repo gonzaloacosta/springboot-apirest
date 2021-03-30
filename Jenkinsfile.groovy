@@ -64,13 +64,13 @@ pipeline {
                 }
             }
         }
-        stage('Stage 7 - Check Application RUN') {
-            steps {
-                echo 'STAGE 7 - Check Application RUN'
-                steps {
-                    sh "curl -s http://development.eba-fkx55m2f.us-east-1.elasticbeanstalk.com/message"
-                }
-            }
-        }
+        //stage('Stage 7 - Check Application RUN') {
+            //steps {
+                //echo 'STAGE 7 - Check Application RUN'
+                //steps {
+                //    sh "curl -s http://development.eba-fkx55m2f.us-east-1.elasticbeanstalk.com/message"
+                //}
+            //}
+        //}
     }
 }
