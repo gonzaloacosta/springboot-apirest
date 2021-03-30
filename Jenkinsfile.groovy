@@ -14,6 +14,7 @@ pipeline {
             steps {
                 echo "STAGE1 - Tasks pre Test and build"
                 sh "ls -ltr"
+                deleteDir()
                 checkout scm
             }
         }
