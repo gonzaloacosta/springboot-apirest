@@ -35,7 +35,7 @@ pipeline {
             steps {
                 echo "STAGE 4 - Create Artifact"
                 sh "echo test > serco.crt"
-                zip archive: true, dir: 'archive', glob: 'Dockerfile, serco.crt, target/*.jar', zipFile: 'rapientrega.zip'
+                zip archive: true, glob: 'Dockerfile, serco.crt, target/*.jar', zipFile: 'rapientrega.zip'
             }
         }
         stage('Stage 5 - Upload Artifact to S3 Bucket') {
