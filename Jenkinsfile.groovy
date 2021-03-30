@@ -4,6 +4,10 @@ pipeline {
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
     	VERSION = "0.1"
+        AWS+REGION = "us-east-1"
+        AWS_CREDENTIAL = "aws-credentials-jenkins-s3"
+        S3_ARTIFACT = "semperti-rapientrega-development-s3-backend-artifact"
+        S3_ARTIFACT_NAME = "rapientrega.zip"
     }
     stages {
         stage('Stage 1 - Configure & Clean Slave') {
@@ -20,28 +24,29 @@ pipeline {
                 sh "mvn test"
             }
         }
-        stage('Stage 3 - Release & Upload Nexus') {
+        stage('Stage 3 - Release & Package') {
             steps {
                 echo "STAGE3 - Release & Upload Nexus"
                 sh "mvn versions:set -DnewVersion=$env.VERSION"
                 sh "mvn clean package -DskipTests"
             }
         }
-        stage('Stage 4 - Snapshot & Upload Nexus') {
+        stage('Stage 4 - Create Artifact') {
             steps {
-                echo "STAGE 4 - Snapshot & Upload Nexus"
-                sh "mvn versions:set -DnewVersion=$env.VERSION-SNAPSHOT"
-                sh "mvn clean package -DskipTests" 
+                echo "STAGE 4 - Create Artifact"
+                sh "echo test > serco.crt"
+                zip archive: true, dir: 'archive', glob: 'Dockerfile, serco.crt, target/*.jar', zipFile: 'rapientrega.zip'
             }
         }
-        stage('Stage 5 - Docker build, tag & push images ') {
+        stage('Stage 5 - Upload Artifact to S3 Bucket') {
             steps {
-                echo "STAGE 5 - Docker build, tag & push images"
-                //withCredentials([usernamePassword(credentialsId: 'ga-docker-hub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {	
-                //dir("${env.WORKSPACE}/ansible"){
-                //    sh "ansible-playbook stage5-docker-build.yml --extra-vars @vars/ansible-vars.json -e VERSION=$env.VERSION -e USERNAME=$USERNAME -e PASSWORD=$PASSWORD"
-                //}
-            } 
+                echo "STAGE 5 - Upload Artifact to S3 Bucket"
+                withAWS(credentials: "aws-credentials-jenkins-s3", region: "us-east-1") {
+                    s3Upload(file:"rapientrega.zip", 
+                    bucket:"semperti-rapientrega-development-s3-backend-artifact", 
+                    path:"rapientrega.zip")
+                }
+            }
         }
         stage('Stage 6 - Docker pull & run') {
             steps {
