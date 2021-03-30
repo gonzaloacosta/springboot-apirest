@@ -51,27 +51,23 @@ pipeline {
         stage('Stage 6 - Check CodePipeline Running') {
             steps {
                 echo "STAGE 6 - Check CodePipeline Running"
-                //dir("${env.WORKSPACE}/ansible"){
-                //    sh "pwd"
-                //    sh "ansible-playbook --extra-vars @vars/ansible-vars.json stage6-docker-run.yml -e VERSION=$env.VERSION"
-                //}
-
+                // Wait to manual approve
                 timeout(300) {
                     waitUntil {
                         script {
-                            def r = sh script: 'curl http://http://development.eba-fkx55m2f.us-east-1.elasticbeanstalk.com/message', returnStatus: true
+                            def r = sh script: 'curl -s http://development.eba-fkx55m2f.us-east-1.elasticbeanstalk.com/message', returnStatus: true
                             return (r == 0);
                         }
                     }
-                } 
+                }
             }
         }
         stage('Stage 7 - Check Application RUN') {
             steps {
                 echo 'STAGE 7 - Check Application RUN'
-                //steps {
-                //    sh "curl http://localhost:8080"
-                //}
+                steps {
+                    sh "curl -s http://development.eba-fkx55m2f.us-east-1.elasticbeanstalk.com/message"
+                }
             }
         }
     }
