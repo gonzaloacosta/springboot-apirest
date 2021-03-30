@@ -10,11 +10,11 @@ pipeline {
         //S3_ARTIFACT_OBJECT = "rapientrega.zip"
     }
     stages {
-        stage('Stage 1 - Configure & Clean Slave') {
+        stage('Stage 1 - Checkout') {
             steps {
-                echo "STAGE1 - Tasks pre Test and build"
+                echo "STAGE1 - Checkout"
                 sh "ls -ltr"
-                deleteDir()
+                //deleteDir()
                 checkout scm
             }
         }
@@ -22,7 +22,8 @@ pipeline {
             steps {
                 echo "STAGE2 - Unit Test"
                 sh "pwd ; ls -ltr"
-                sh "mvn clean test"
+                sh "mvn clean "
+                sh "mvn test"
             }
         }
         stage('Stage 3 - Release & Package') {
@@ -36,7 +37,7 @@ pipeline {
             steps {
                 echo "STAGE 4 - Create Artifact"
                 sh "echo test > serco.crt"
-                zip archive: true, glob: 'Dockerfile, serco.crt, target/*.jar', zipFile: 'rapientrega.zip'
+                zip archive: true, glob: 'Dockerfile, serco.crt, target/*.jar', zipFile: 'rapientrega.zip', overwrite: true
             }
         }
         stage('Stage 5 - Upload Artifact to S3 Bucket') {
