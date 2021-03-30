@@ -1,5 +1,6 @@
 pipeline {
 
+    deleteDir()
     agent any
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
@@ -13,9 +14,8 @@ pipeline {
         stage('Stage 1 - Configure & Clean Slave') {
             steps {
                 echo "STAGE1 - Tasks pre Test and build"
-                //sh "git clone https://github.com/gonzaloacosta/springboot-apirest app"
                 sh "ls -ltr"
-                deleteDir()
+                checkout scm
             }
         }
         stage('Stage 2 - Unit Test') {
