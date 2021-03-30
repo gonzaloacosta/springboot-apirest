@@ -1,6 +1,5 @@
 pipeline {
 
-    deleteDir()
     agent any
     environment {
         ANSIBLE_HOST_KEY_CHECKING = 'false'
@@ -16,13 +15,14 @@ pipeline {
                 echo "STAGE1 - Tasks pre Test and build"
                 sh "ls -ltr"
                 checkout scm
+                mvn clean
             }
         }
         stage('Stage 2 - Unit Test') {
             steps {
                 echo "STAGE2 - Unit Test"
                 sh "pwd ; ls -ltr"
-                sh "mvn test"
+                sh "mvn clean test"
             }
         }
         stage('Stage 3 - Release & Package') {
