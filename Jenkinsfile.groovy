@@ -114,9 +114,13 @@ pipeline {
             steps {
                 echo "Check CodePipeline Running"
                 withAWS(credentials: "${awsCredentials}", region: "${awsRegion}") {
-                    ebWaitOnEnvironmentStatus(
-                        applicationName: "${ebDevAppBlue}",
-                        environmentName: "${ebDevEnvBlue}"
+                    //ebWaitOnEnvironmentStatus(applicationName: "${ebDevAppBlue}", environmentName: "${ebDevEnvBlue}")
+                    ebWaitOnEnvironmentHealth(
+                        applicationName: "${ebDevAppBlue}", 
+                        environmentName: "${ebDevEnvBlue}",
+                        health: "Green",
+                        stabilityThreshold: 60
+
                     )
                 }
                 //def ebDevAppBlueSucceeded = sh (script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
