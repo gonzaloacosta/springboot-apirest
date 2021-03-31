@@ -120,12 +120,30 @@ pipeline {
                 //    )
                 //}
                 script {
-                    def ebDeployStatus = sh(script: """aws --profile ${awsProfile} codepipeline list-action-executions --pipeline-name ${codepipelineName} | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
-                    println("Deploy Status = ${ebDeployStatus}")
-                    while (ebDeployStatus != "Succeeded") {
-                        sleep 5
-                        echo "Waiting for ${ebDeployStatus} to be ready"
+                    def pipelineStatus = ""
+                    def pipelineId = ""
+                    echo "Waiting for CodePipeline InProgress State...."
+
+                    while (pipelineStatus != "InProgress" ) {
+                    
+                        def pipelineStatus = sh(script: """aws codepipeline get-pipeline-state --name semperti-rapientrega-development-pipeline-backend | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
+                        def pipelineId = sh(script: """aws codepipeline get-pipeline-state --name semperti-rapientrega-development-pipeline-backend | jq '.stageStates[1].latestExecution.pipelineExecutionId'""", returnStdout: true).trim()
+                    
+                        echo "CodePipeline: ${codepipelineName} with ID: ${pipelineId} in Status: ${pipelineStatus}"
+                        sleep 10
                     }
+                    
+                    echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, waiting for Succeeded..."
+                    
+                    while (pipelineStatus != "Succeeded") {
+                    
+                        def pipelineStatus = sh(script: """aws codepipeline get-pipeline-state --name semperti-rapientrega-development-pipeline-backend | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
+                    
+                        echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, waiting for Succeeded..."
+                        sleep 10
+                    }
+                    
+                    echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, the Artifact is deployed"
                 }
             }
         }
