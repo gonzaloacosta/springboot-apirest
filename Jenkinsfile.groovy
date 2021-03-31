@@ -101,7 +101,7 @@ pipeline {
         }
         stage('Upload Artifact to S3 Bucket') {
             steps {
-                input "Upload Artifact ${artifactName} to S3 Bucket ${s3Artifact}?"
+                input "Upload Artifact ${artifactDev} to S3 Bucket ${s3ArtifactDev}?"
                 withAWS(credentials: "${awsCredentials}", region: "${awsRegion}") {
                     s3Upload(file:"${artifactDev}", bucket:"${s3ArtifactDev}", path:"${artifactDev}")
                 }
@@ -116,13 +116,12 @@ pipeline {
                         environmentName: "${ebDevEnvBlue}"
                     )
                 }
-                def ebDevAppBlueSucceeded = sh (script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
-                println ebDevAppBlueSucceeded
-                
-                while (ebDevAppBlueSucceeded != "Succeeded") {
-                    sleep 5
-                    echo "Waiting for ${ebDevAppBlue} to be ready"
-                }
+                //def ebDevAppBlueSucceeded = sh (script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
+                //println ebDevAppBlueSucceeded
+                //while (ebDevAppBlueSucceeded != "Succeeded") {
+                //    sleep 5
+                //    echo "Waiting for ${ebDevAppBlue} to be ready"
+                //}
             }
         }
         stage('Check Application is Up and Running') {
