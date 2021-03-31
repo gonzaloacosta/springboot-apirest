@@ -10,7 +10,7 @@ public class MessageController {
 
     @GetMapping("/message")
     Message send() {
-            return new Message("You aren't Cordobee if you doesn't like Ferne'");
+            return new Message("Hello World from Argentina'");
     }
 
     @PostMapping("/message")
