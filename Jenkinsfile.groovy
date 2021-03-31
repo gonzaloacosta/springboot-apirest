@@ -127,10 +127,10 @@ pipeline {
                     while ( pipelineStatus != "InProgress" ) {
                     
                         pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
-                        pipelineStatus = pipelineStatus.replaceAll("^\"|\"$", "")
+                        pipelineStatus = pipelineStatus.replace("\"", "");
 
                         pipelineId = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.pipelineExecutionId'""", returnStdout: true).trim()
-                        pipelineId = pipelineId.replaceAll("^\"|\"$", "")
+                        pipelineId = pipelineId.replace("\"", "");
 
                         echo "CodePipeline: ${codepipelineName} with ID: ${pipelineId} in Status: ${pipelineStatus}"
                         println pipelineStatus
@@ -149,7 +149,7 @@ pipeline {
                     while (pipelineStatus != "Succeeded") {
                     
                         pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
-                        pipelineStatus = pipelineStatus.replaceAll("^\"|\"$", "")
+                        pipelineStatus = pipelineStatus.replace("\"", "");
 
                         echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, waiting for Succeeded..."
                         sleep 10
