@@ -121,8 +121,8 @@ pipeline {
                 //        stabilityThreshold: 60
                 //    )
                 //}
-                def ebDevAppBlueSucceeded = sh returnStdout: true, 
-                    script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'"""
+                //def ebDevAppBlueSucceeded = sh returnStdout: true, script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'"""
+                def ebDevAppBlueSucceeded = sh returnStdout: true, script: "echo Succeeded"
                 println ebDevAppBlueSucceeded
                 //while (ebDevAppBlueSucceeded != "Succeeded") {
                 //    sleep 5
