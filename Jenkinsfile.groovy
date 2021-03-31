@@ -40,7 +40,6 @@ def ebUrlPath = "message"
 //def ebUrlGreen = "development-green.eba-fkx55m2f.us-east-1.elasticbeanstalk.com"
 //def ebUrlGreen = "message"
 
-
 pipeline {
 
     agent any
@@ -123,9 +122,8 @@ pipeline {
                     def pipelineStatus = ""
                     def pipelineId = ""
                     echo "Waiting for CodePipeline: ${codepipelineName} InProgress State...."
-
                     while ( pipelineStatus != "InProgress" ) {
-                    
+
                         pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
                         pipelineStatus = pipelineStatus.replace("\"", "");
 
@@ -133,13 +131,6 @@ pipeline {
                         pipelineId = pipelineId.replace("\"", "");
 
                         echo "CodePipeline: ${codepipelineName} with ID: ${pipelineId} in Status: ${pipelineStatus}"
-                        println pipelineStatus
-
-                        if (pipelineStatus == "InProgress") {
-                            println "Same"
-                        } else {
-                            println "Not same"
-                        }
 
                         sleep 10
                     }
