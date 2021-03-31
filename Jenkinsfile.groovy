@@ -28,7 +28,8 @@ def artifactDev = "${app}.zip"
 def artifactProd = "${app}.zip"
 def s3ArtifactDev = "${prefix}-${app}-${dev}-s3-backend-artifact"
 def s3ArtifactProd = "${prefix}-${app}-${prod}-s3-backend-artifact"
-def awsCredentials = "aws-credentials-jenkins-s3"
+//def awsCredentials = "aws-credentials-jenkins-s3"
+def awsCredentials = "aws-credentials-semperti"
 def awsRegion = "us-east-1"
 
 // ElasticBeanstalk Blue/Green
