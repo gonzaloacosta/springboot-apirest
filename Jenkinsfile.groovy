@@ -122,12 +122,12 @@ pipeline {
                 script {
                     def pipelineStatus = ""
                     def pipelineId = ""
-                    echo "Waiting for CodePipeline InProgress State...."
+                    echo "Waiting for CodePipeline: ${codepipelineName} InProgress State...."
 
                     while (pipelineStatus != "InProgress" ) {
                     
-                        pipelineStatus = sh(script: """aws codepipeline get-pipeline-state --name semperti-rapientrega-development-pipeline-backend | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
-                        pipelineId = sh(script: """aws codepipeline get-pipeline-state --name semperti-rapientrega-development-pipeline-backend | jq '.stageStates[1].latestExecution.pipelineExecutionId'""", returnStdout: true).trim()
+                        pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
+                        pipelineId = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.pipelineExecutionId'""", returnStdout: true).trim()
                     
                         echo "CodePipeline: ${codepipelineName} with ID: ${pipelineId} in Status: ${pipelineStatus}"
                         sleep 10
@@ -137,7 +137,7 @@ pipeline {
                     
                     while (pipelineStatus != "Succeeded") {
                     
-                        pipelineStatus = sh(script: """aws codepipeline get-pipeline-state --name semperti-rapientrega-development-pipeline-backend | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
+                        pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
                     
                         echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, waiting for Succeeded..."
                         sleep 10
