@@ -121,9 +121,13 @@ pipeline {
                 //        stabilityThreshold: 60
                 //    )
                 //}
+                script {
+                    def disk_size = sh(script: "df / --output=avail | tail -1", returnStdout: true).trim() as Integer
+                    println("disk_size = ${disk_size}")
+                }
                 //def ebDevAppBlueSucceeded = sh returnStdout: true, script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'"""
-                def ebDevAppBlueSucceeded = sh returnStdout: true, script: "echo Succeeded"
-                println ebDevAppBlueSucceeded
+                //env.STATUSDEPLOY = sh returnStdout: true, script: "echo Succeeded"
+                //println ebDevAppBlueSucceeded
                 //while (ebDevAppBlueSucceeded != "Succeeded") {
                 //    sleep 5
                 //    echo "Waiting for ${ebDevAppBlue} to be ready"
