@@ -122,16 +122,13 @@ pipeline {
                 //    )
                 //}
                 script {
-                    def disk_size = sh(script: "df / --output=avail | tail -1", returnStdout: true).trim() as Integer
-                    println("disk_size = ${disk_size}")
+                    def ebDeployStatus = sh(script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
+                    println("Deploy Status = ${ebDeployStatus}")
+                    //while (ebDeployStatus != "Succeeded") {
+                    //    sleep 5
+                    //    echo "Waiting for ${ebDevAppBlue} to be ready"
+                    //}
                 }
-                //def ebDevAppBlueSucceeded = sh returnStdout: true, script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'"""
-                //env.STATUSDEPLOY = sh returnStdout: true, script: "echo Succeeded"
-                //println ebDevAppBlueSucceeded
-                //while (ebDevAppBlueSucceeded != "Succeeded") {
-                //    sleep 5
-                //    echo "Waiting for ${ebDevAppBlue} to be ready"
-                //}
             }
         }
         stage('Check Application is Up and Running') {
@@ -140,7 +137,7 @@ pipeline {
                 timeout(300) {
                     waitUntil {
                         script {
-                            def r = sh script: 'curl -s http://${ebUrlDevBlue}/message', returnStatus: true
+                            def r = sh script: "curl -s http://${ebUrlDevBlue}/${ebUrlDevBluePath}", returnStatus: true
                             return (r == 0);
                         }
                     }
