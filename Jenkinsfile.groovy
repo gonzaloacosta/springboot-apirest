@@ -126,10 +126,12 @@ pipeline {
 
                     while ( pipelineStatus != "InProgress" ) {
                     
-                        pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim().replaceAll("^\"|\"$", "")
+                        pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
+                        pipelineStatus = pipelineStatus.replaceAll("^\"|\"$", "")
 
-                        pipelineId = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.pipelineExecutionId'""", returnStdout: true).trim().replaceAll("^\"|\"$", "")
-                    
+                        pipelineId = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.pipelineExecutionId'""", returnStdout: true).trim()
+                        pipelineId = pipelineId.replaceAll("^\"|\"$", "")
+
                         echo "CodePipeline: ${codepipelineName} with ID: ${pipelineId} in Status: ${pipelineStatus}"
                         println pipelineStatus
 
@@ -146,8 +148,8 @@ pipeline {
                     
                     while (pipelineStatus != "Succeeded") {
                     
-                        pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim().replaceAll("^\"|\"$", "");
-                        
+                        pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
+                        pipelineStatus = pipelineStatus.replaceAll("^\"|\"$", "")
 
                         echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, waiting for Succeeded..."
                         sleep 10
