@@ -46,9 +46,9 @@ def ebUrlDevGreenPath = "message"
 pipeline {
 
     agent any
-    environment {
-        //ANSIBLE_HOST_KEY_CHECKING = 'false'
-    }
+    //environment {
+    //    ANSIBLE_HOST_KEY_CHECKING = 'false'
+    //}
     stages {
         stage('Checkout Source') {
             steps {
