@@ -1,6 +1,6 @@
 // Set your project Prefix using your GUID
 // Set variable globally to be available in all stages
-def prefix      = "gire"
+def prefix      = "semperti"
 def app = "rapientrega"
 
 // Set Maven command to always include Nexus Settings
@@ -102,6 +102,8 @@ pipeline {
         stage('Upload Artifact to S3 Bucket') {
             steps {
                 input "Upload Artifact ${artifactDev} to S3 Bucket ${s3ArtifactDev}?"
+                println artifactDev
+                println s3ArtifactDev
                 withAWS(credentials: "${awsCredentials}", region: "${awsRegion}") {
                     s3Upload(file:"${artifactDev}", bucket:"${s3ArtifactDev}", path:"${artifactDev}")
                 }
