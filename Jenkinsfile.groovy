@@ -122,7 +122,7 @@ pipeline {
                 //    )
                 //}
                 script {
-                    def ebDeployStatus = sh(script: """aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
+                    def ebDeployStatus = sh(script: """aws --profile semperti codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | .status'""", returnStdout: true).trim()
                     println("Deploy Status = ${ebDeployStatus}")
                     //while (ebDeployStatus != "Succeeded") {
                     //    sleep 5
