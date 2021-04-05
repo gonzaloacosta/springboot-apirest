@@ -131,12 +131,10 @@ pipeline {
                         pipelineId = pipelineId.replace("\"", "");
 
                         echo "CodePipeline: ${codepipelineName} with ID: ${pipelineId} in Status: ${pipelineStatus}"
-
                         sleep 10
                     }
                     
                     echo "Codepipeline ID: ${pipelineId} is in ${pipelineStatus} Status, waiting for Succeeded..."
-                    
                     while (pipelineStatus != "Succeeded") {
                     
                         pipelineStatus = sh(script: """aws --profile ${awsProfile} codepipeline get-pipeline-state --name ${codepipelineName} | jq '.stageStates[1].latestExecution.status'""", returnStdout: true).trim()
