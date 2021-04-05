@@ -1,0 +1,8 @@
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="InProgress")'
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | {stageName: .stageName, stageStatus: .status}'
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="InProgress")'
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | {stageName: .stageName, stageStatus: .status}'
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded" and .stageName=="Deploy") | {stageName: .stageName, stageStatus: .status}'
+# ID del pipeline in progress
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="InProgress") | .pipelineExecutionId '
+aws codepipeline list-action-executions --pipeline-name semperti-rapientrega-development-pipeline-backend | jq '.actionExecutionDetails[] | select(.status=="Succeeded") | .pipelineExecutionId '

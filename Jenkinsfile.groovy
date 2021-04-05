@@ -20,7 +20,7 @@ def s3Artifact = "${prefix}-${app}-${env}-s3-backend-artifact"
 //def awsCredentials = "aws-credentials-jenkins-s3"
 def awsCredentials = "aws-credentials-semperti"
 def awsRegion = "us-east-1"
-def awsProfile = "semperti"
+def awsProfile = "jenkins"
 
 // CodePipeline
 def codepipelineName = "${prefix}-${app}-${env}-pipeline-backend"
